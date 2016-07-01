@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Features</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <style>
+            body {
+                color: #888;
+                font-size: 18px;
+                line-height: 1.4;
+                -webkit-font-smoothing: antialiased;
+                background: #f3f3f3;
+            }
+            .features-container {
+                position: relative;
+                height: 490px; 
+            }
+            
+            .carousel {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+            .carousel-control {
+                position: absolute;
+                width: 80px;
+                color: #000;
+                background: none !important;   
+            }
+            .carousel-control.left {
+                left: -80px;
+            }
+            .carousel-control.right {
+                right: -80px;
+            }
+            .carousel .carousel-inner,
+            .carousel .item,
+            .carousel .content {
+                height: 100%;
+            }
+            
+            .close-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 50px;
+                height: 40px;
+                line-height: 40px;
+                color: #000;
+                font-weight: bold;
+                text-align: center;
+                background: #00d7b2;
+            }
+            .content-green .close-btn {
+                background: #fff;   
+            }
+            .close-btn:hover {
+                background: #494b52;
+                color: #fff;   
+            }
+            
+            .content {
+                padding: 30px;
+            }
+            .content h2 {
+                font-size: 28px;
+                margin: 0 0 5px;
+            }
+            .content-green {
+                background: #00d7b2;   
+            }
+            .content-green h2 {
+                color: #fff;
+            }
+            .content-yellow {
+                background: #ffcb4a;   
+            }
+            .content-yellow h2 {
+                color: #333;
+            }
+            .content-white {
+                background: #fff;
+            }
+            .content-white h2 {
+                color: #333;
+            }
+            .content-grey {
+                background: #494b52;
+            }
+            .content-grey h2 {
+                color: #fff;
+            }
+            .content-red {
+                background: #ff5a55;
+            }
+            .content-red h2 {
+                color: #fff;
+            }
+            .content-white-green {
+                background: #fff;
+            }
+            .content-white-green h2 {
+                color: #00d7b2;
+            }
+            
+            .boxes > :first-child {
+                margin-bottom: 30px;   
+            }
+            .boxes .row > * {
+                position: static;
+            }
+            .boxes .content {
+                height: 230px;
+                cursor: pointer;
+            }
+            .boxes .content.animate {
+                transition: all 0.4s ease;
+            }
+            .boxes .content.active {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .feature-img {
+                float: right;
+                margin: -30px -30px 0 30px;
+                width: calc(50% + 30px);
+                height: 490px;
+            }
+            
+        </style>
+		
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+        <script>
+            ;(function($) {
+                $(function() {
+                    
+                    var boxes = $('.boxes'),
+                        contents = boxes.find('.content'),
+                        carousel = $('.carousel'),
+                        closeButtons = carousel.find('.close-btn');
+                        
+                    $.each(contents, function(key) {
+                        var el = $(this);
+                        el
+                            .on('click', function() {
+                                var pos = el.position(),
+                                    clone = el.clone();
+                                
+                                // We'll animate a clone so to leave the original content as is.
+                                clone
+                                    // Set the clone to position absolute and insert it directly
+                                    // over the original element.
+                                    .css({
+                                        position: 'absolute',
+                                        left: pos.left,
+                                        top: pos.top,
+                                        width: el.outerWidth(true)
+                                    })
+                                    .appendTo(boxes)
+                                    .children()
+                                        .remove();
+                                
+                                // Using a timeout allows the clone to be inserted before
+                                // the animation class takes affect. Otherwise the animation
+                                // won't occur.
+                                setTimeout(function() {
+                                    clone
+                                        .addClass('animate')
+                                        .css({
+                                            left: 0,
+                                            top: 0,
+                                            width: '100%',
+                                            height: '100%'
+                                        });
+                                        
+                                    // Once the animation has completed show the carousel, make 
+                                    // the carousel's relevant slide and indicator active and hide
+                                    // the boxes, finally removing the clone.
+                                    setTimeout(function() {
+                                        carousel.removeClass('hidden');
+                                        
+                                        carousel
+                                            .find('.item')
+                                            .removeClass('active')
+                                            .eq(key)
+                                            .addClass('active');
+                                            
+                                        carousel
+                                            .find('[data-slide-to]')
+                                            .removeClass('active')
+                                            .eq(key)
+                                            .addClass('active');
+                                        
+                                        boxes.addClass('hidden');
+                                        clone.remove();
+                                    }, 400);
+                                    
+                                });
+                            });
+                    });
+                    
+                    $.each(closeButtons, function(key) {
+                        $(this)
+                            .on('click', function() { 
+                                
+                                // Hide the carousel and show the boxes again.
+                                carousel.addClass('hidden');
+                                boxes.removeClass('hidden');
+                                
+                                // The key of the button clicked will be the same 
+                                // as the key of the box.
+                                var content = contents.eq(key),
+                                    pos = content.position(),
+                                    clone = content.clone().appendTo(boxes);
+                                    
+                                clone.children().remove();
+                                
+                                // Expand the clone to fill the space before
+                                // applying it with the animate class and setting
+                                // it with the width and height of the original 
+                                // element so its size shrinks back down.
+                                clone
+                                    .css({
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        width: '100%',
+                                        height: '100%'
+                                    })
+                                    .addClass('animate')
+                                    .css({
+                                        left: pos.left,
+                                        top: pos.top,
+                                        width: content.outerWidth(true),
+                                        height: content.outerHeight(true)
+                                    });
+                                
+                                // Remove the clone once the animation has completed.
+                                setTimeout(function() {
+                                    clone.remove();
+                                }, 400);
+                            });
+                    });
+                });
+            })(jQuery);
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="features">
+                
+                <div class="text-center">
+                    <h1>Features</h1>
+                    <p>Our range of benefits exclusively built for you</p>
+                </div>
+                
+                <div class="features-container">
+                    <div id="carousel-example-generic" class="hidden carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+                        </ol>
+                        
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item">
+                                <div class="content content-green">
+                                    <span class="close-btn">✕</span>
+                                    <img class="feature-img" src="img/feature-img.jpg">
+                                    <h2>Designed for your whole team, not just designers</h2>
+                                    <p>
+                                        <strong>CreativeCMS</strong> offers your whole team access as required to templates, code 
+                                        <span class="highlight-yellow">(HTML, CSS, JavaScript)</span>, fonts and images, providing 
+                                        unlimited scope to extend the default range of components <span class="highlight-yellow">
+                                        (Blog, Case studies and all.)</span> to fit the bespoke needs of any client.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content content-yellow">
+                                    <span class="close-btn">✕</span>
+                                    <h2>A modern CMS</h2>
+                                    <p>A platform built for the modern business.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content content-white">
+                                    <span class="close-btn">✕</span>
+                                    <h2>One United Team</h2>
+                                    <p>Designed for your whole team, not just designers.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content content-grey">
+                                    <span class="close-btn">✕</span>
+                                    <h2>Nimble & Lively</h2>
+                                    <p>New websites up and running in seconds.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content content-red">
+                                    <span class="close-btn">✕</span>
+                                    <h2>Bright Content</h2>
+                                    <p>A proven CMS to support your success.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content content-white-green">
+                                    <span class="close-btn">✕</span>
+                                    <h2>Work Efficiently</h2>
+                                    <p>Benefit from regular upgrades without disruption.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    
+                    <div class="boxes">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="content content-green">
+                                    <h2>One Central Location</h2>
+                                    <p>Easily manage your client base.</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="content content-yellow">
+                                    <h2>A modern CMS</h2>
+                                    <p>A platform built for the modern business.</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="content content-white">
+                                    <h2>One United Team</h2>
+                                    <p>Designed for your whole team, not just designers.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="content content-grey">
+                                    <h2>Nimble & Lively</h2>
+                                    <p>New websites up and running in seconds.</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="content content-red">
+                                    <h2>Bright Content</h2>
+                                    <p>A proven CMS to support your success.</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="content content-white-green">
+                                    <h2>Work Efficiently</h2>
+                                    <p>Benefit from regular upgrades without disruption.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </body>    
+</html>
