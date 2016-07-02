@@ -1,4 +1,4 @@
 # features-carousel
 
-## Demo
+### Demo
 https://nicholaswright.github.io/grid-to-carousel/
