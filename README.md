@@ -1,4 +1,4 @@
-# features-carousel
+# grid-to-carousel
 
 A jQuery plugin for transitioning between a Bootstrap grid and carousel.
 
