@@ -139,4 +139,7 @@ body {
     .content p {
         font-size: 13px;
     }
+    .feature-img {
+        height: 390px; 
+    }
 }
