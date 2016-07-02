@@ -12,5 +12,5 @@ A jQuery plugin for transitioning between a Bootstrap grid and carousel.
 6. The grid item is cloned, exanded to cover the grid and the carousel hidden and the grid displayed.
 7. The clone is then shrunk down to the size and location of the grid item before being removed.
 
-### Demo
+## Demo
 https://nicholaswright.github.io/grid-to-carousel/
