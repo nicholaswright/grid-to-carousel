@@ -84,10 +84,16 @@ body {
 .content-grey h2 {
     color: #fff;
 }
+.content-grey p {
+    color: #999;
+}
 .content-red {
     background: #ff5a55;
 }
 .content-red h2 {
+    color: #fff;
+}
+.content-red p {
     color: #fff;
 }
 .content-white-green {
@@ -106,6 +112,12 @@ body {
 .grid .content {
     height: 230px;
     cursor: pointer;
+    overflow: hidden;
+}
+.grid img {
+    float: right;
+    margin: 0 -50px 0 0;
+       
 }
 .grid .content.animate {
     transition: all 0.4s ease;
@@ -125,9 +137,17 @@ body {
     height: 490px;
 }
 
+@media (max-width: 992px) {
+    .grid img {
+        display: none;
+    }
+}
 @media (max-width: 768px) {
     .features-container {
         height: 390px; 
+    }
+    .row > div {
+        padding: 5px;
     }
     .grid .content {
         padding: 15px;
@@ -137,7 +157,7 @@ body {
         font-size: 18px;
     }
     .content p {
-        font-size: 13px;
+        font-size: 14px;
     }
     .feature-img {
         height: 390px; 
